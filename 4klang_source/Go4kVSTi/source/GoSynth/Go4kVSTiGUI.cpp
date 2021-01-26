@@ -15,6 +15,8 @@
 #define T_GLOBAL		1
 #define NUM_TABS		2
 
+static void StopRecordAndSave();
+
 static HINSTANCE hInstance;
 static UINT_PTR timer = 1;
 static UINT_PTR backupTimer = 2;
@@ -1013,14 +1015,14 @@ BOOL CALLBACK MainDialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM l
 
 						bool recordingNoise = SendDlgItemMessage(hwndDlg, IDC_RECORDBUSYSIGNAL, BM_GETCHECK, 0, 0) == BST_CHECKED;
 
-						Go4kVSTi_Record(true, recordingNoise, patternsize, patternquant);
+						Go4kVSTi_RecordBegin(recordingNoise, patternsize, patternquant);
 						return TRUE;
 					}
 					case IDC_STOP_BUTTON:
 					{
 						EnableWindow(GetDlgItem(DialogWnd, IDC_RECORD_BUTTON), true);
 						EnableWindow(GetDlgItem(DialogWnd, IDC_STOP_BUTTON), false);
-						Go4kVSTi_Record(false, false, 0, 0);
+						StopRecordAndSave();
 						return TRUE;
 					}
 					case IDC_PANIC:
@@ -3408,7 +3410,7 @@ void UpdateVoiceDisplay(int i)
 	}
 }
 
-void GetStreamFileName()
+static void StopRecordAndSave()
 {
 #ifdef EXPORT_OBJECT_FILE
 	
@@ -3496,7 +3498,11 @@ void GetStreamFileName()
 		int undenormalize = SendDlgItemMessage(DialogWnd, IDC_UNDENORMALIZE, BM_GETCHECK, 0, 0);
 		int objformat = SendDlgItemMessage(DialogWnd, IDC_OBJFORMAT, CB_GETCURSEL, (WPARAM)0, (LPARAM)0);
 		int output16 = SendDlgItemMessage(DialogWnd, IDC_16BIT, BM_GETCHECK, 0, 0);
-		Go4kVSTi_SaveByteStream(hInstance, ofn.lpstrFile, useenvlevels, useenotevalues, clipoutput, undenormalize, objformat, output16);
+		Go4kVSTi_RecordEndAndSave(ofn.lpstrFile, useenvlevels, useenotevalues, clipoutput, undenormalize, objformat, output16);
+	}
+	else
+	{
+		Go4kVSTi_RecordAbort();
 	}
 }
 

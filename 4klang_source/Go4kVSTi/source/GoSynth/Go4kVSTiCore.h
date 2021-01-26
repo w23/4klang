@@ -1,3 +1,4 @@
+#pragma once
 #include "windows.h"
 
 // init synth
@@ -37,8 +38,6 @@ float Go4kVSTi_GetBPM();
 
 // activate solo mode
 void Go4kVSTi_Solo(int channel, int solo);
-// stream recording activation/deactivation
-void Go4kVSTi_Record(bool record, bool recordingNoise, int patternsize, float patternquant);
 // panic
 void Go4kVSTi_Panic();
 // update dll times (e.g. sync to current bpm)
@@ -66,7 +65,10 @@ void Go4kVSTi_LoadUnit(char* filename, BYTE* slot);
 // save unit date from specified slot
 void Go4kVSTi_SaveUnit(char* filename, BYTE* slot);
 
-void Go4kVSTi_SaveByteStream(const char* filename, int useenvlevels, int useenotevalues, int clipoutput, int undenormalize, int objformat, int output16);
+// stream recording activation/deactivation
+void Go4kVSTi_RecordBegin(bool recordingNoise, int patternsize, float patternquant);
+void Go4kVSTi_RecordEndAndSave(const char* filename, int useenvlevels, int useenotevalues, int clipoutput, int undenormalize, int objformat, int output16);
+void Go4kVSTi_RecordAbort();
 
 #define MAX_POLYPHONY		2
 #define MAX_INSTRUMENTS		16

@@ -78,6 +78,9 @@ void Recorder::finishAndSaveByteStream(std::unique_ptr<Recorder>&& recorder, con
 	std::unique_ptr<Recorder> rec(std::move(recorder));
 	recorder.reset();
 
+	if (!filename)
+		return;
+
 	rec->end();
 	rec->write(filename, useenvlevels, useenotevalues, clipoutput, undenormalize, objformat, output16);
 }

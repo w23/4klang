@@ -32,6 +32,9 @@
     <ClCompile Include="..\source\GoSynth\Go4kVSTiproc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\GoSynth\Export.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Go4kVSTi.rc">
@@ -64,6 +67,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\GoSynth\Export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -142,8 +142,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-
-  <ItemGroup></ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\GoSynth\Export.cpp" />
+    <ClCompile Include="..\source\GoSynth\Go4kVSTiCore.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\GoSynth\Export.h" />
+    <ClInclude Include="..\source\GoSynth\Go4kVSTiCore.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

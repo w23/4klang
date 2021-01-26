@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+#include "Go4kVSTiGUI.h"
+#include "..\..\win\resource.h"
 #include <stdio.h>
 
 #include <vector>
@@ -1488,5 +1490,26 @@ SynthObjectP Go4kVSTi_GetSynthObject()
 //
 ////////////////////////////////////////////////////////////////////////////
 
-void Go4kVSTi_Record(bool record, bool recordingNoise, int patternsize, float patternquant);
-void Go4kVSTi_SaveByteStream(const char* filename, int useenvlevels, int useenotevalues, int clipoutput, int undenormalize, int objformat, int output16);
+void Go4kVSTi_RecordBegin(bool recordingNoise, int patternsize, float patternquant)
+{
+	if (recorder)
+		return;
+
+	recorder.reset(new Recorder(SynthObj, recordingNoise, BeatsPerMinute, patternsize, patternquant));
+}
+
+void Go4kVSTi_RecordEndAndSave(const char* filename, int useenvlevels, int useenotevalues, int clipoutput, int undenormalize, int objformat, int output16)
+{
+	if (!recorder)
+		return;
+
+	Recorder::finishAndSaveByteStream(std::move(recorder), filename, useenvlevels, useenotevalues, clipoutput, undenormalize, objformat, output16);
+}
+
+void Go4kVSTi_RecordAbort()
+{
+	if (!recorder)
+		return;
+
+	Recorder::finishAndSaveByteStream(std::move(recorder), nullptr, 0, 0, 0, 0, 0, 0);
+}

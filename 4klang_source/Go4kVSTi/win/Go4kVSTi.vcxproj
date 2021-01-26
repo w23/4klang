@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="..\source\common\AudioEffect.cpp" />
     <ClCompile Include="..\source\common\audioeffectx.cpp" />
+    <ClCompile Include="..\source\GoSynth\Export.cpp" />
     <ClCompile Include="..\source\GoSynth\Go4kVSTi.cpp" />
     <ClCompile Include="..\source\GoSynth\Go4kVSTiCore.cpp">
       <CallingConvention Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Cdecl</CallingConvention>
@@ -178,6 +179,7 @@
     <ClInclude Include="..\source\common\AEffEditor.hpp" />
     <ClInclude Include="..\source\common\AudioEffect.hpp" />
     <ClInclude Include="..\source\common\audioeffectx.h" />
+    <ClInclude Include="..\source\GoSynth\Export.h" />
     <ClInclude Include="..\source\GoSynth\Go4kVSTi.h" />
     <ClInclude Include="..\source\GoSynth\Go4kVSTiCore.h" />
     <ClInclude Include="..\source\GoSynth\Go4kVSTiGUI.h" />

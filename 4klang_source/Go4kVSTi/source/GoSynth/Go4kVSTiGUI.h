@@ -176,7 +176,5 @@ void UpdateControls(int channel);
 void UpdateModuleParamWindow(int tab, int unit);
 void UpdateVoiceDisplay(int i);
 
-void GetStreamFileName();
-
 
 
