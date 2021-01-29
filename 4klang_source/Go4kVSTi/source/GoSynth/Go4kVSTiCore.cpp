@@ -12,6 +12,8 @@
 #include <list>
 #include <string>
 
+#define MessageBox(...)
+
 DWORD versiontag10 = 0x30316b34; // 4k10
 DWORD versiontag11 = 0x31316b34; // 4k11
 DWORD versiontag12 = 0x32316b34; // 4k12
@@ -1087,7 +1089,7 @@ bool Autoconvert13(int stack)
 
 
 // load patch data
-void Go4kVSTi_LoadPatch(char *filename)
+void Go4kVSTi_LoadPatch(const char *filename)
 {
 	Go4kVSTi_ResetPatch();
 	FILE *file = fopen(filename, "rb");

@@ -53,7 +53,7 @@ void Go4kVSTi_AddVoice(int channel, int note);
 void Go4kVSTi_StopVoice(int channel, int note);
 
 // load binary patch data
-void Go4kVSTi_LoadPatch(char *filename);
+void Go4kVSTi_LoadPatch(const char *filename);
 // save binary patch data
 void Go4kVSTi_SavePatch(char *filename);
 // load instrumen data to specified channel
