@@ -147,8 +147,12 @@ int main(int argc, const char* argv[])
 	const auto &song_data = song.child("RenoiseSong");
 	const auto &global_song_data = song_data.child("GlobalSongData");
 
+	const float samplerate = 44100.f;
 	const float bpm = std::stof(global_song_data.child_value("BeatsPerMin"));
 	fprintf(stderr, "BPM: %f\n", bpm);
+	const float lines_per_beat = std::stof(global_song_data.child_value("LinesPerBeat"));
+	const float samples_per_line = samplerate * 60.f / (bpm * lines_per_beat);
+	fprintf(stderr, "samples per line: %f\n", samples_per_line);
 	
 	const auto& xinstruments = song_data.child("Instruments").children();
 	std::vector<RnsInstrument> instruments;
@@ -216,6 +220,8 @@ int main(int argc, const char* argv[])
 	//std::unordered_map<std::pair<int, int>, int> trk_col_instr;
 
 	std::vector<RnsNote> track_instrument(patterns[0].tracks.size(), { NOTE_EMPTY, -1 });
+	int total_lines = 0;
+	int ticked_samples = 0;
 	for (const auto& xpat_index : xpattern_sequence) {
 		const int pattern_index = std::stoi(xpat_index.child_value());
 		fprintf(stderr, "Pattern %d\n", pattern_index);
@@ -244,10 +250,13 @@ int main(int argc, const char* argv[])
 					//fprintf(stderr, "voiceAdd(%d, %d)\n", midi_channel, note.note);
 					recorder->voiceAdd(midi_channel - 1, note.note);
 				}
-			}
-			recorder->tick(roundf(44100.f * 60.f / (bpm * 4.f)));
-		}
-	}
+			} // for all tracks for current line in pattern
+
+			const int this_line_sample = roundf(.5f + samples_per_line * (++total_lines));
+			recorder->tick(this_line_sample - ticked_samples);
+			ticked_samples = this_line_sample;
+		} // for all lines in pattern
+	} // for all patterns in sequence
 
 	const int useenvlevels = 0;
 	const int useenotevalues = 0;
