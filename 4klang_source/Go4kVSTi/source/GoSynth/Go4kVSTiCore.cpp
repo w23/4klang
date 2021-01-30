@@ -12,7 +12,7 @@
 #include <list>
 #include <string>
 
-#define MessageBox(...)
+#define MessageBox(msg, title, flags) fprintf(stderr, "MessageBox: %s: %s %08x\n", title, msg, flags)
 
 DWORD versiontag10 = 0x30316b34; // 4k10
 DWORD versiontag11 = 0x31316b34; // 4k11

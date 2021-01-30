@@ -178,7 +178,6 @@ int main(int argc, const char* argv[])
 	for (const auto& xpattern : song_data.child("PatternPool").child("Patterns").children()) {
 		const int lines = std::stoi(xpattern.child_value("NumberOfLines"));
 		std::vector<RnsTrack> tracks;
-		int instrument_index = -1;
 		for (const auto& xtrack : xpattern.child("Tracks").children("PatternTrack")) {
 			RnsTrack track;
 			track.notes.resize(lines);
@@ -200,9 +199,9 @@ int main(int argc, const char* argv[])
 						fprintf(stderr, "Note %s is not valid\n", xnote);
 						return 3;
 					}
-					instrument_index = note >= 0 ? std::stoi(xcolm.child_value("Instrument")) : -1;
+					const int instrument_index = note > NOTE_OFF ? std::stoi(xcolm.child_value("Instrument"), 0, 16) : -1;
 					track.notes[line] = { note, instrument_index };
-					//fprintf(stderr, "%d: col=%d inst=%d note=%d(%s)\n", index, column, instrument_index, note, xnote);
+					//fprintf(stderr, "%d: col=%d inst=%d(%s) note=%d(%s)\n", line, column, instrument_index, xcolm.child_value("Instrument"), note, xnote);
 					++column;
 				}
 			}
@@ -211,7 +210,7 @@ int main(int argc, const char* argv[])
 		patterns.emplace_back(RnsPattern{ lines, std::move(tracks) });
 	}
 
-	std::unique_ptr<Recorder> recorder{ new Recorder(*Go4kVSTi_GetSynthObject(), false, bpm, 16, 2.0f) };
+	std::unique_ptr<Recorder> recorder{ new Recorder(*Go4kVSTi_GetSynthObject(), true, bpm, 16, 1.0f) };
 
 	const auto& xpattern_sequence = song_data.child("PatternSequence").child("PatternSequence").children("Pattern");
 	//std::unordered_map<std::pair<int, int>, int> trk_col_instr;
@@ -231,18 +230,22 @@ int main(int argc, const char* argv[])
 
 				if (track_instrument[trk].note != NOTE_EMPTY) {
 					//fprintf(stderr, "voiceStop(%d, %d)\n", track_instrument[trk].instrument, track_instrument[trk].note);
-					recorder->voiceStop(track_instrument[trk].instrument, track_instrument[trk].note);
+					recorder->voiceStop(track_instrument[trk].instrument - 1, track_instrument[trk].note);
 					track_instrument[trk] = { NOTE_EMPTY, -1 };
 				}
 
 				if (note.note != NOTE_OFF) {
 					const int midi_channel = instruments.at(note.instrument).midi_channel;
+					if (midi_channel > MAX_INSTRUMENTS) {
+						fprintf(stderr, "inane midi channel %d note %d track %d line %d\n", midi_channel, note.note, trk, line);
+						continue;
+					}
 					track_instrument[trk] = { note.note, midi_channel };
 					//fprintf(stderr, "voiceAdd(%d, %d)\n", midi_channel, note.note);
-					recorder->voiceAdd(midi_channel, note.note);
+					recorder->voiceAdd(midi_channel - 1, note.note);
 				}
 			}
-			recorder->tick(44100.f * 60.f / (bpm * 2));
+			recorder->tick(roundf(44100.f * 60.f / (bpm * 4.f)));
 		}
 	}
 
