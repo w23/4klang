@@ -221,6 +221,8 @@ int main(int argc, const char* argv[])
 		patterns.emplace_back(RnsPattern{ lines, std::move(tracks) });
 	}
 
+	Go4kVSTi_SetBPM(bpm);
+
 	std::unique_ptr<Recorder> recorder{ new Recorder(*Go4kVSTi_GetSynthObject(), true, bpm, 16, 1.0f) };
 
 	const auto& xpattern_sequence = song_data.child("PatternSequence").child("PatternSequence").children("Pattern");
