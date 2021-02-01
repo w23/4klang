@@ -89,7 +89,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\source\deps/pugixml;$(SolutionDir)..\source\GoSynth</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\source\deps\pugixml;$(SolutionDir)..\source\deps\miniz;$(SolutionDir)..\source\GoSynth</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\source\deps/pugixml;$(SolutionDir)..\source\GoSynth</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\source\deps\pugixml;$(SolutionDir)..\source\deps\miniz;$(SolutionDir)..\source\GoSynth</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,12 +142,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\deps\miniz\miniz.c" />
     <ClCompile Include="..\source\deps\pugixml\pugixml.cpp" />
     <ClCompile Include="..\source\GoSynth\Export.cpp" />
     <ClCompile Include="..\source\GoSynth\Go4kVSTiCore.cpp" />
     <ClCompile Include="4konv.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\deps\miniz\miniz.h" />
     <ClInclude Include="..\source\deps\pugixml\pugiconfig.hpp" />
     <ClInclude Include="..\source\deps\pugixml\pugixml.hpp" />
     <ClInclude Include="..\source\GoSynth\Export.h" />

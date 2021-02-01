@@ -27,6 +27,9 @@
     <ClCompile Include="..\source\deps\pugixml\pugixml.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\deps\miniz\miniz.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\GoSynth\Go4kVSTiCore.h">
@@ -41,5 +44,13 @@
     <ClInclude Include="..\source\deps\pugixml\pugixml.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\deps\miniz\miniz.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <YASM Include="..\win\4klang.asm">
+      <Filter>Исходные файлы</Filter>
+    </YASM>
   </ItemGroup>
 </Project>

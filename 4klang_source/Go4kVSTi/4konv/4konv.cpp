@@ -2,6 +2,7 @@
 #include "Go4kVSTiCore.h"
 
 #include <pugixml.hpp>
+#include <miniz.h>
 #include <unordered_map>
 #include <stdio.h>
 
@@ -55,14 +56,13 @@ int main(int argc, const char* argv[])
 {
 	if (argc < 4)
 	{
-		fprintf(stderr, "Usage: %s Song.xml patch.4kp output.inc\n", argv[0]);
+		fprintf(stderr, "Usage: %s Song.xrns patch.4kp output.inc\n", argv[0]);
 		return 1;
 	}
 
 	const char* renoise_file = argv[1];
 	const char* patch_file = argv[2];
 	const char* output_file = argv[3];
-	fprintf(stderr, "Reading renoise song file %s\n", renoise_file);
 
 	SynthObjectP SynthObjP = Go4kVSTi_GetSynthObject();
 	for (int i = 0; i < MAX_INSTRUMENTS; i++)
@@ -136,11 +136,18 @@ int main(int argc, const char* argv[])
 		}
 	}
 
+	fprintf(stderr, "Reading renoise song file %s\n", renoise_file);
+	size_t song_file_size = 0;
+	void* song_file_data = mz_zip_extract_archive_file_to_heap(renoise_file, "Song.xml", &song_file_size, 0);
+	if (!song_file_data) {
+		fprintf(stderr, "Unable to extract Song.xml\n");
+		return 1;
+	}
 	pugi::xml_document song;
-	pugi::xml_parse_result result = song.load_file(renoise_file);
+	pugi::xml_parse_result result = song.load_buffer(song_file_data, song_file_size);
 	if (!result)
 	{
-		fprintf(stderr, "Error parsing song file\n");
+		fprintf(stderr, "Error parsing song data\n");
 		return 1;
 	}
 
